@@ -4,7 +4,12 @@
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
-    "allPublicMethods" : true
+    "allPublicMethods" : true,
+    "fields" : [
+      { "name" : "filepath1" },
+      { "name" : "filepath2" },
+      { "name" : "format" }
+    ]
   },
   {
     "name" : "picocli.CommandLine$AutoHelpMixin",
