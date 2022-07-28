@@ -3,6 +3,6 @@ build-dist:
 	gradle installDist
 
 run:
-	./build/install/app/bin/app $(arg)
+	./build/install/app/bin/app $(arg) ./file1.json ./file2.json
 
 run-dist: build-dist run
