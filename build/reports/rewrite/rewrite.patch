@@ -1,0 +1,68 @@
+diff --git a/build.gradle b/build.gradle
+index 1f0b825..1147bca 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -1,38 +1,38 @@ org.openrewrite.java.cleanup.MethodParamPad, org.openrewrite.java.format.EmptyNewlineAtEndOfFile
+-plugins {
+-    id 'java'
+-    id 'application'
+-    id 'checkstyle'
++plugins{
++    id'java'
++    id'application'
++    id'checkstyle'
+     id("org.openrewrite.rewrite") version("5.24.0")
+ }
+ 
+-rewrite {
++rewrite{
+     activeRecipe("org.openrewrite.java.cleanup.Cleanup")
+ }
+ 
+-group 'hexlet.code'
+-version '1.0-SNAPSHOT'
++group'hexlet.code'
++version'1.0-SNAPSHOT'
+ 
+-repositories {
++repositories{
+     mavenCentral()
+ }
+ 
+-dependencies {
+-    implementation 'info.picocli:picocli:4.6.3'
+-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+-    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
++dependencies{
++    implementation'info.picocli:picocli:4.6.3'
++    implementation'com.fasterxml.jackson.core:jackson-databind:2.13.3'
++    annotationProcessor'info.picocli:picocli-codegen:4.6.3'
++    testImplementation'org.junit.jupiter:junit-jupiter-api:5.8.2'
++    testRuntimeOnly'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+ }
+ 
+-test {
++test{
+     useJUnitPlatform()
+ }
+ 
+-application {
++application{
+     mainClass = 'hexlet.code.App'
+ }
+ 
+-compileJava {
++compileJava{
+     options.compilerArgs += ["-Aproject=/"]}roject.group}${project.name}"]
+ }
+ 
+@@ -42,4 +42,4 @@
+ // In a kotlin build script, use tasks.withType<Checkstyle>()
+ tasks.withType(Checkstyle) {
+     dependsOn(rewriteRunTask)
+-}
+\ No newline at end of file
++}
+

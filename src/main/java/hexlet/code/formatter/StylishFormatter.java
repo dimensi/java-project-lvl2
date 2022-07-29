@@ -6,23 +6,25 @@ import hexlet.code.Operation;
 
 import java.util.List;
 
-public class StylishFormatter implements Formatter {
+public final class StylishFormatter implements Formatter {
     private final int indentSize;
 
-    public StylishFormatter(int indentSize) {
-        this.indentSize = indentSize;
+    public StylishFormatter(final int size) {
+        this.indentSize = size;
     }
 
     @Override
-    public String format(List<DiffEntry> json) {
+    public String format(final List<DiffEntry> json) {
         var builder = new StringBuilder();
         builder.append("{\n");
         for (var entry : json) {
             var indent = " ".repeat(indentSize);
-            var operation = entry.operation() == Operation.equal ? " " : entry.operation().toString();
+            var operation = entry.operation() == Operation.equal ? " "
+                : entry.operation().toString();
             var name = entry.key();
             var value = entry.value();
-            builder.append(String.format("%s%s %s: %s%n", indent, operation, name, value));
+            builder.append(
+                String.format("%s%s %s: %s%n", indent, operation, name, value));
         }
         builder.append("}");
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.37">
+<file name="/Users/dimensi/projects/app/src/main/java/hexlet/code/App.java">
+</file>
+<file name="/Users/dimensi/projects/app/src/main/java/hexlet/code/DiffEntry.java">
+</file>
+<file name="/Users/dimensi/projects/app/src/main/java/hexlet/code/Differ.java">
+</file>
+<file name="/Users/dimensi/projects/app/src/main/java/hexlet/code/Formatter.java">
+</file>
+<file name="/Users/dimensi/projects/app/src/main/java/hexlet/code/Operation.java">
+</file>
+<file name="/Users/dimensi/projects/app/src/main/java/hexlet/code/formatter/StylishFormatter.java">
+</file>
+</checkstyle>
