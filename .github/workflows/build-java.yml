@@ -20,11 +20,11 @@ jobs:
       with:
         java-version: '17'
         distribution: 'liberica'
-    - name: Setup Gradle
+    - name: Setup Gradle and execute 'build' task
       uses: gradle/gradle-build-action@v2
-    - name: Execute Gradle build
       with:
         arguments: build
+
   test:
     runs-on: ubuntu-latest
 
