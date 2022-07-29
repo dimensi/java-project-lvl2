@@ -5,10 +5,8 @@ build-dist:
 run:
 	./build/install/app/bin/app $(arg) ./file1.json ./file2.json
 
-checkstyle:
+build:
 	gradle check
-
-build: checkstyle
 	gradle build
 
 run-dist: build-dist run
