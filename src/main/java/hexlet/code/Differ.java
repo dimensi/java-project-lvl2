@@ -1,8 +1,6 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.formatter.StylishFormatter;
 
 import java.io.File;
@@ -10,17 +8,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Differ {
-    private final ObjectMapper mapper = new ObjectMapper();
+
     public static final int INDENT_SIZE = 2;
 
     public static String generate(final File file1, final File file2)
         throws IOException {
         var differ = new Differ();
-        var firstJson = differ.jsonToMap(file1);
-        var secondJson = differ.jsonToMap(file2);
+        var firstJson = Parser.parse(file1);
+        var secondJson = Parser.parse(file2);
         var diff = differ.collectDiff(firstJson, secondJson);
 
         return new StylishFormatter(INDENT_SIZE).format(diff);
@@ -56,18 +53,5 @@ public class Differ {
         }
 
         return result;
-    }
-
-    private Map<String, JsonNode> jsonToMap(final File file)
-        throws IOException {
-        Map<String, JsonNode> json =
-            sortMap(mapper.readValue(file, new TypeReference<>() {
-            }));
-
-        return sortMap(json);
-    }
-
-    private Map<String, JsonNode> sortMap(final Map<String, JsonNode> map) {
-        return new TreeMap<>(map);
     }
 }
