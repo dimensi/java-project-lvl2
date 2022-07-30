@@ -2,8 +2,9 @@ build-dist:
 	gradle clean
 	gradle installDist
 
+arg = ./file1.json ./file2.json
 run:
-	./build/install/app/bin/app $(arg) ./file1.json ./file2.json
+	./build/install/app/bin/app $(arg)
 
 build:
 	gradle check
