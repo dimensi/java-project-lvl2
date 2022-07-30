@@ -12,10 +12,12 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 enum ParserType {
-    json, yml
+    json,
+    yml,
 }
 
 public class Parser {
+
     private final ObjectMapper mapper;
 
     public Parser(final ParserType type) {
@@ -40,11 +42,13 @@ public class Parser {
         }
         return ParserType.json;
     }
+
     private Map<String, JsonNode> fileToMap(final File file)
         throws IOException {
-        Map<String, JsonNode> json =
-            sortMap(mapper.readValue(file, new TypeReference<>() {
-            }));
+        Map<String, JsonNode> json = sortMap(
+            mapper.readValue(file, new TypeReference<>() {
+            })
+        );
 
         return sortMap(json);
     }

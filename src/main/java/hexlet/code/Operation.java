@@ -5,9 +5,9 @@ public enum Operation {
     add,
     remove;
 
-
     /**
      * Operation in string.
+     *
      * @return String
      */
     public String toString() {
