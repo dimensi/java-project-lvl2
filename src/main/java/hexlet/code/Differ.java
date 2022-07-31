@@ -34,9 +34,9 @@ public final class Differ {
 
     public Differ(final FormatTypes formatType) {
         this.formatter = switch (formatType) {
-            case stylish -> new StylishFormatter();
             case plain -> new PlainFormatter();
             case json -> new JsonFormatter();
+            default -> new StylishFormatter();
         };
     }
 
