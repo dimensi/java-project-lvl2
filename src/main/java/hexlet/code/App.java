@@ -22,17 +22,15 @@ public final class App implements Callable<Integer> {
     @Parameters(index = "1", description = "path to second file")
     private File filepath2;
 
-    @Option(
-        names = {"-f", "--format"},
-        description = "output format [default: stylish]",
-        defaultValue = "stylish"
-    )
-    private String format;
+    @Option(names = {"-f", "--format"}, description =
+        "output format: ${COMPLETION-CANDIDATES}"
+            + " [default: ${DEFAULT-VALUE}]")
+    private FormatTypes format = FormatTypes.stylish;
 
     @Override
     public Integer call() {
         try {
-            System.out.println(Differ.generate(filepath1, filepath2));
+            System.out.println(Differ.generate(filepath1, filepath2, format));
         } catch (Exception err) {
             System.out.println(err.getMessage());
         }

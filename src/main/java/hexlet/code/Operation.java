@@ -1,20 +1,8 @@
 package hexlet.code;
 
 public enum Operation {
-    equal,
+    same,
     add,
-    remove;
-
-    /**
-     * Operation in string.
-     *
-     * @return String
-     */
-    public String toString() {
-        return switch (this) {
-            case add -> "+";
-            case remove -> "-";
-            case equal -> "";
-        };
-    }
+    remove,
+    update
 }

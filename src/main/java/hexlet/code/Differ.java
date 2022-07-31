@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import hexlet.code.formatter.PlainFormatter;
 import hexlet.code.formatter.StylishFormatter;
 
 import java.io.File;
@@ -10,18 +11,48 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+enum FormatTypes {
+    stylish,
+    plain;
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
+}
+
 public class Differ {
 
-    public static final int INDENT_SIZE = 2;
+
+    private final Formatter formatter;
+
+    public Differ(final FormatTypes formatType) {
+        this.formatter = switch (formatType) {
+            case stylish -> new StylishFormatter();
+            case plain -> new PlainFormatter();
+        };
+    }
+
 
     public static String generate(final File file1, final File file2)
         throws IOException {
-        var differ = new Differ();
+        return Differ.generate(file1, file2, FormatTypes.stylish);
+    }
+
+    public static String generate(final File file1,
+                                  final File file2,
+                                  final FormatTypes formatType)
+        throws IOException {
+        var differ = new Differ(formatType);
         var firstJson = Parser.parse(file1);
         var secondJson = Parser.parse(file2);
         var diff = differ.collectDiff(firstJson, secondJson);
 
-        return new StylishFormatter(INDENT_SIZE).format(diff);
+        return differ.format(diff);
+    }
+
+    private String format(final List<DiffEntry> diff) {
+        return formatter.format(diff);
     }
 
     private List<DiffEntry> collectDiff(
@@ -33,30 +64,24 @@ public class Differ {
             var field = secondJson.get(entry.getKey());
             if (field == null) {
                 result.add(
-                    new DiffEntry(entry.getKey(), entry.getValue(),
-                        Operation.remove)
+                    DiffEntry.remove(entry.getKey(), entry.getValue())
                 );
                 continue;
             }
             if (entry.getValue().equals(field)) {
                 result.add(
-                    new DiffEntry(entry.getKey(), entry.getValue(),
-                        Operation.equal)
+                    DiffEntry.same(entry.getKey(), entry.getValue())
                 );
-            }
-            if (!entry.getValue().equals(field)) {
+            } else {
                 result.add(
-                    new DiffEntry(entry.getKey(), entry.getValue(),
-                        Operation.remove)
+                    DiffEntry.update(entry.getKey(), entry.getValue(), field)
                 );
-                result.add(new DiffEntry(entry.getKey(), field, Operation.add));
             }
         }
         for (var entry : secondJson.entrySet()) {
             if (firstJson.get(entry.getKey()) == null) {
                 result.add(
-                    new DiffEntry(entry.getKey(), entry.getValue(),
-                        Operation.add)
+                    DiffEntry.add(entry.getKey(), entry.getValue())
                 );
             }
         }

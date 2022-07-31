@@ -16,10 +16,14 @@ import java.util.stream.Stream;
 
 public final class StylishFormatter implements Formatter {
 
-    private final int indentSize;
+    public static final int INDENT_SIZE = 2;
 
-    public StylishFormatter(final int size) {
-        this.indentSize = size;
+    private String getOperationChar(final Operation operation) {
+        return switch (operation) {
+            case add -> "+";
+            case remove -> "-";
+            case same, update -> " ";
+        };
     }
 
     private String formatValue(final JsonNode value) {
@@ -73,15 +77,30 @@ public final class StylishFormatter implements Formatter {
         var builder = new StringBuilder();
         builder.append("{\n");
         for (var entry : json) {
-            var indent = " ".repeat(indentSize);
-            var operation = entry.operation() == Operation.equal
-                ? " "
-                : entry.operation().toString();
+            var indent = " ".repeat(INDENT_SIZE);
             var name = entry.key();
             var value = formatValue(entry.value());
-            builder.append(
-                String.format("%s%s %s: %s%n", indent, operation, name, value)
-            );
+            var newValue =
+                entry.newValue() != null ? formatValue(entry.newValue())
+                    : null;
+            if (entry.isUpdate()) {
+                builder.append(
+                    String.format("%s%s %s: %s%n", indent,
+                        getOperationChar(Operation.remove), name,
+                        value)
+                );
+                builder.append(
+                    String.format("%s%s %s: %s%n", indent,
+                        getOperationChar(Operation.add), name,
+                        newValue)
+                );
+            } else {
+                var operation = getOperationChar(entry.operation());
+                builder.append(
+                    String.format("%s%s %s: %s%n", indent, operation, name,
+                        value)
+                );
+            }
         }
         builder.append("}");
 
