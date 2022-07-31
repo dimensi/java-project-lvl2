@@ -95,14 +95,14 @@ class DifferTest {
     public void testGenerateDiffTypes(final FormatTypes formatType)
         throws Exception {
         var filePath1 = String.format("differ/%s/json/case1/file1.json",
-            formatType);
+            formatType.toString());
         var filePath2 = String.format("differ/%s/yaml/case1/file2.yml",
-            formatType);
+            formatType.toString());
         var resultPath = String.format("differ/%s/yaml/case1/result.txt",
-            formatType);
+            formatType.toString());
         var file1 = getFile(filePath1);
         var file2 = getFile(filePath2);
-        var result = Differ.generate(file1, file2);
+        var result = Differ.generate(file1, file2, formatType);
         var expectResult = getFileAsString(resultPath);
         assertThat(result).isEqualTo(expectResult);
     }
@@ -112,14 +112,14 @@ class DifferTest {
     public void testGenerateDiffYamlExtension(final FormatTypes formatType)
         throws Exception {
         var filePath1 = String.format("differ/%s/yaml/case4/file1.yml",
-            formatType);
-        var filePath2 = String.format("differ/%s/yaml/case4/file2.yml",
-            formatType);
+            formatType.toString());
+        var filePath2 = String.format("differ/%s/yaml/case4/file2.yaml",
+            formatType.toString());
         var resultPath = String.format("differ/%s/yaml/case4/result.txt",
-            formatType);
+            formatType.toString());
         var file1 = getFile(filePath1);
         var file2 = getFile(filePath2);
-        var result = Differ.generate(file1, file2);
+        var result = Differ.generate(file1, file2, formatType);
         var expectResult = getFileAsString(resultPath);
         assertThat(result).isEqualTo(expectResult);
     }
