@@ -17,8 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 enum Extension {
     yaml,
     json;
+
     public String toExt() {
-        return  switch (this) {
+        return switch (this) {
             case json -> "json";
             case yaml -> "yml";
         };
@@ -30,23 +31,27 @@ record TestCase(String index, FormatTypes type, Extension extension) {
 
 class DifferTest {
 
-    private File getFile(final String filepath) {
-        return new File(
+    private String getFile(final String filepath) {
+        return Objects
+            .requireNonNull(
+                getClass().getClassLoader().getResource(filepath)).getPath();
+    }
+
+    private String getFileAsString(final String filepath) throws Exception {
+        var file = new File(
             Objects
                 .requireNonNull(
                     getClass().getClassLoader().getResource(filepath))
                 .getFile()
         );
-    }
-
-    private String getFileAsString(final String filepath) throws Exception {
         return FileUtils.readFileToString(
-            getFile(filepath),
+            file,
             Charset.defaultCharset()
         );
     }
 
     static final int TEST_CASE_SIZES = 3;
+
     static Stream<TestCase> testCaseStream() {
         List<TestCase> testCases = new ArrayList<>();
         for (var i = 1; i <= TEST_CASE_SIZES; i++) {
@@ -83,6 +88,7 @@ class DifferTest {
                 idx);
         var file1 = getFile(filePath1);
         var file2 = getFile(filePath2);
+        System.out.println(file1);
         var result = Differ.generate(file1, file2, type);
         var expectResult = getFileAsString(resultPath);
         assertThat(result).isEqualTo(expectResult);

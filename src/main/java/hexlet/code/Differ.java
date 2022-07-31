@@ -15,10 +15,19 @@ import java.util.Map;
 enum FormatTypes {
     stylish,
     json,
-    plain
+    plain;
+
+    public static FormatTypes byString(final String value) {
+        for (var item : FormatTypes.values()) {
+            if (item.toString().equals(value)) {
+                return item;
+            }
+        }
+        return FormatTypes.stylish;
+    }
 }
 
-public class Differ {
+public final class Differ {
 
 
     private final Formatter formatter;
@@ -32,21 +41,36 @@ public class Differ {
     }
 
 
-    public static String generate(final File file1, final File file2)
+    public static String generate(final String file1, final String file2)
         throws IOException {
         return Differ.generate(file1, file2, FormatTypes.stylish);
     }
 
-    public static String generate(final File file1,
-                                  final File file2,
+    public static String generate(final String file1, final String file2,
+                                  final String formatType)
+        throws IOException {
+        return Differ.generate(file1, file2, FormatTypes.byString(formatType));
+    }
+
+    public static String generate(final String file1,
+                                  final String file2,
                                   final FormatTypes formatType)
         throws IOException {
         var differ = new Differ(formatType);
+        var firstJson = new File(file1);
+        var secondJson = new File(file2);
+
+        return differ.getDiff(firstJson, secondJson);
+    }
+
+    public String getDiff(final File file1,
+                          final File file2)
+        throws IOException {
         var firstJson = Parser.parse(file1);
         var secondJson = Parser.parse(file2);
-        var diff = differ.collectDiff(firstJson, secondJson);
+        var diff = collectDiff(firstJson, secondJson);
 
-        return differ.format(diff);
+        return format(diff);
     }
 
     private String format(final List<DiffEntry> diff) {
