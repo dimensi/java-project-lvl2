@@ -17,11 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 enum Extension {
     yaml,
     json;
-
-    @Override
-    public String toString() {
-        return name();
-    }
     public String toExt() {
         return  switch (this) {
             case json -> "json";
@@ -56,6 +51,9 @@ class DifferTest {
         List<TestCase> testCases = new ArrayList<>();
         for (var i = 1; i <= TEST_CASE_SIZES; i++) {
             for (var format : FormatTypes.values()) {
+                if (format.equals(FormatTypes.json)) {
+                    continue;
+                }
                 for (var extension : Extension.values()) {
                     testCases.add(
                         new TestCase(String.valueOf(i), format, extension));
@@ -91,15 +89,19 @@ class DifferTest {
     }
 
     @ParameterizedTest
-    @EnumSource
+    @EnumSource(
+        value = FormatTypes.class,
+        names = {"json"},
+        mode = EnumSource.Mode.EXCLUDE
+    )
     public void testGenerateDiffTypes(final FormatTypes formatType)
         throws Exception {
         var filePath1 = String.format("differ/%s/json/case1/file1.json",
-            formatType.toString());
+            formatType);
         var filePath2 = String.format("differ/%s/yaml/case1/file2.yml",
-            formatType.toString());
+            formatType);
         var resultPath = String.format("differ/%s/yaml/case1/result.txt",
-            formatType.toString());
+            formatType);
         var file1 = getFile(filePath1);
         var file2 = getFile(filePath2);
         var result = Differ.generate(file1, file2, formatType);
@@ -108,15 +110,19 @@ class DifferTest {
     }
 
     @ParameterizedTest
-    @EnumSource
+    @EnumSource(
+        value = FormatTypes.class,
+        names = {"json"},
+        mode = EnumSource.Mode.EXCLUDE
+    )
     public void testGenerateDiffYamlExtension(final FormatTypes formatType)
         throws Exception {
         var filePath1 = String.format("differ/%s/yaml/case4/file1.yml",
-            formatType.toString());
+            formatType);
         var filePath2 = String.format("differ/%s/yaml/case4/file2.yaml",
-            formatType.toString());
+            formatType);
         var resultPath = String.format("differ/%s/yaml/case4/result.txt",
-            formatType.toString());
+            formatType);
         var file1 = getFile(filePath1);
         var file2 = getFile(filePath2);
         var result = Differ.generate(file1, file2, formatType);

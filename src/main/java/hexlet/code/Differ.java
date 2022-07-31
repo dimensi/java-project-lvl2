@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import hexlet.code.formatter.JsonFormatter;
 import hexlet.code.formatter.PlainFormatter;
 import hexlet.code.formatter.StylishFormatter;
 
@@ -13,12 +14,8 @@ import java.util.Map;
 
 enum FormatTypes {
     stylish,
-    plain;
-
-    @Override
-    public String toString() {
-        return this.name();
-    }
+    json,
+    plain
 }
 
 public class Differ {
@@ -30,6 +27,7 @@ public class Differ {
         this.formatter = switch (formatType) {
             case stylish -> new StylishFormatter();
             case plain -> new PlainFormatter();
+            case json -> new JsonFormatter();
         };
     }
 

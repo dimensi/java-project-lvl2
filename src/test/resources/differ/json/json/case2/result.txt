@@ -1,0 +1,13 @@
+[ {
+  "key" : "host",
+  "value" : "hexlet.io",
+  "operation" : "same"
+}, {
+  "key" : "timeout",
+  "value" : 20,
+  "operation" : "same"
+}, {
+  "key" : "verbose",
+  "value" : true,
+  "operation" : "same"
+} ]
